@@ -1,0 +1,262 @@
+<nav class="navbar navbar-dark bg-primary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Jose Sanchez - Movies </a>
+    </div>
+</nav>
+
+<div class="container py-15">
+
+    <fieldset class="border p-2 mb-1 mt-2 filters">
+        <legend class="w-auto h6">Movies</legend>
+        <fieldset class="border p-2 mb-1 mt-2 filters">
+            <legend class="w-auto h6">Filtros</legend>
+            <form [formGroup]="formGroupMovies">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="inputProducto">Producto</label>
+                                <input type="text" formControlName="fcn_producto" class="form-control" id="inputProducto" placeholder="Producto">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="inputUsuario">Usuario</label>
+                                <input type="text" formControlName="fcn_usuario" class="form-control" id="inputUsuario" placeholder="Usuario">
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="startDate">Fecha de inicio:</label>
+                                <input type="date" formControlName="fcn_fecha_inicio" id="startDate" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="endDate">Fecha de fin:</label>
+                                <input type="date" formControlName="fcn_fecha_fin" id="endDate" class="form-control">
+
+                                <!-- <small *ngIf="formGroupMovies.get('fcn_fecha_fin')?.hasError('endDateInvalid')" class="text-danger">
+                                    La fecha de fin debe ser mayor o igual a la fecha de inicio.
+                                  </small> -->
+
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="invisible">Espaciador invisible</label>
+                                <button type="button" class="btn btn-success btn-block"
+                                    (click)="buscarMovies()">Buscar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </fieldset>
+
+        <fieldset class="border p-2 mb-1 mt-2 filters">
+            <legend class="w-auto h6">Indicadores</legend>
+            <form [formGroup]="formGroupIndicadores">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="inputProducto">Total Registros</label>
+                                <input readonly="true" type="text" formControlName="fcn_total_registros" class="form-control" placeholder="Total Registros">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="inputProducto">Cantidad de Usuarios</label>
+                                <input readonly="true" type="text" formControlName="fcn_cantidad_usuario" class="form-control" placeholder="Cantidad de Usuarios">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="inputUsuario">Máximo score</label>
+                                <input readonly="true" type="text" formControlName="fcn_maximo_score" class="form-control"  placeholder="Máximo score">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="inputUsuario">Mínimo score</label>
+                                <input readonly="true" type="text" formControlName="fcn_minimo_score" class="form-control" placeholder="Mínimo score">
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="inputUsuario">Promedio score</label>
+                                <input readonly="true" type="text" formControlName="fcn_promedio_score" class="form-control" placeholder="Promedio score">
+                            </div>
+                        </div>
+
+                       
+
+                     
+                    </div>
+                </div>
+            </form>
+        </fieldset>
+
+        <div class="container py-15">
+            <div class="row">
+                <div class="col-sm-12">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th scope="col">Producto</th>
+                                <th scope="col">Categorias</th>
+                                <th scope="col">Usuario</th>
+                                <th scope="col">Nombre Perfil</th>
+                                <th scope="col">Helpfulness</th>
+                                <th scope="col">Score</th>
+                                <th scope="col">Review Time</th>
+                                <th scope="col">Resumen</th>
+                                <th scope="col">Review</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of objGetMovies;" (click)="dataCustomerRow(item)">
+
+                                <td>{{ item.product_id }}</td>
+                                <td>{{ item.categories }}</td>
+                                <td>{{ item.user_id }}</td>
+                                <td>{{ item.profile_name }}</td>
+                                <td>{{ item.helpfulness }}</td>
+                                <td>{{ item.score }}</td>
+                                <td>{{ item.review_time }}</td>
+                                <td>{{ item.summary }}</td>
+                                <td>{{ item.review_text }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [maxSize]="5"
+                        [boundaryLinks]="false" [pageSize]="pageSize" class="d-flex justify-content-center"
+                        (pageChange)="loadPage(page)"></ngb-pagination>
+
+                </div>
+
+            </div>
+        </div>
+    </fieldset>
+
+
+    <fieldset class="border p-2 mb-1 mt-2 filters">
+        <legend class="w-auto h6">Top 10 de mejores score</legend>
+
+        <div class="container py-15">
+            <div class="row">
+                <div class="col-sm-12">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th scope="col">Producto</th>
+                                <th scope="col">Categorias</th>
+                                <th scope="col">Usuario</th>
+                                <th scope="col">Nombre Perfil</th>
+                                <th scope="col">Helpfulness</th>
+                                <th scope="col">Score</th>
+                                <th scope="col">Review Time</th>
+                                <th scope="col">Resumen</th>
+                                <th scope="col">Review</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of objGetMoviesBest;">
+
+                                <td>{{ item.product_id }}</td>
+                                <td>{{ item.categories }}</td>
+                                <td>{{ item.user_id }}</td>
+                                <td>{{ item.profile_name }}</td>
+                                <td>{{ item.helpfulness }}</td>
+                                <td>{{ item.score }}</td>
+                                <td>{{ item.review_time }}</td>
+                                <td>{{ item.summary }}</td>
+                                <td>{{ item.review_text }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset class="border p-2 mb-1 mt-2 filters">
+        <legend class="w-auto h6">Top 10 de peores score</legend>
+
+        <div class="container py-15">
+            <div class="row">
+                <div class="col-sm-12">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th scope="col">Producto</th>
+                                <th scope="col">Categorias</th>
+                                <th scope="col">Usuario</th>
+                                <th scope="col">Nombre Perfil</th>
+                                <th scope="col">Helpfulness</th>
+                                <th scope="col">Score</th>
+                                <th scope="col">Review Time</th>
+                                <th scope="col">Resumen</th>
+                                <th scope="col">Review</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of objGetMoviesWorst;">
+
+                                <td>{{ item.product_id }}</td>
+                                <td>{{ item.categories }}</td>
+                                <td>{{ item.user_id }}</td>
+                                <td>{{ item.profile_name }}</td>
+                                <td>{{ item.helpfulness }}</td>
+                                <td>{{ item.score }}</td>
+                                <td>{{ item.review_time }}</td>
+                                <td>{{ item.summary }}</td>
+                                <td>{{ item.review_text }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+        </div>
+    </fieldset>
+
+
+    <fieldset class="border p-2 mb-1 mt-2 filters">
+        <legend class="w-auto h6">Tabla Linea de tiempo fechas VS promedio de score y fechas VS promedio de helpfulness</legend>
+
+        <div class="container py-15">
+            <div class="row">
+                <div class="col-sm-12">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th scope="col">Fecha</th>
+                                <th scope="col">promedio de score</th>
+                                <th scope="col">promedio de helpfulness</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of objGetMoviesTimeLine;">
+
+                                <td>{{ item.review_time }}</td>
+                                <td>{{ item.avg_score }}</td>
+                                <td>{{ item.avg_helpfulness_format }}</td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+        </div>
+    </fieldset>
+</div>
